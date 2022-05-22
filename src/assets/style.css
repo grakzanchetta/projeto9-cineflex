@@ -1,0 +1,17 @@
+* {
+  box-sizing: border-box;
+  --color-header: #c3cfd9;
+  --color-background: #e5e5e5;
+  --color-footer: #dfe6ed;
+  --color-orange: #e8833a;
+  --color-green: #8DD7CF;
+  --color-black: #293845;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--color-background);
+    color: var(--color-black);
+    font-family: Roboto, sans-serif;
+}
