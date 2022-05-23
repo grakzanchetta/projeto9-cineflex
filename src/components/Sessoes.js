@@ -14,11 +14,9 @@ export default function Sessoes (){
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${idFilme}/showtimes`);
         promise.then((resposta) => {
             const {data} = resposta;
-            console.log(data);
             setFilme(data);
         });
     }, [])
-
 
     function renderizarSessao (){
         if(filme !== null){
@@ -32,13 +30,13 @@ export default function Sessoes (){
 
     function renderizarFooter(){
         if (filme !== null){
-        return (
+            return (
             <>
               <img src={filme.posterURL} alt={filme.title} />
               <h1>{filme.title}</h1>
             </>
-        )
-    }
+            )
+        }
     }
 
     const footerRenderizado = renderizarFooter();
