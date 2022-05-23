@@ -11,7 +11,7 @@ export default function Assentos (props){
     const navigate = useNavigate();
     const {finalizar} = props;
     const [sessao, setSessao] = useState(null);
-    const [cadeiras, setCadeiras] = useState(new Map());
+    const [cadeiras, setCadeiras] = useState([]);
     const [compra, setCompra] = useState({nome: "", cpf: ""});
 
     useEffect(() => {
@@ -22,37 +22,39 @@ export default function Assentos (props){
         })
     }, [])
 
-    function toggle(id, numero){
-        const escolhido = cadeiras.has(id);
-        if(escolhido){
-            cadeiras.delete(id);
-            setCadeiras(new Map(cadeiras));
+    function toggle(id, numero) {
+        const jaSelecionado = cadeiras.some(assento => assento.id === id);
+        if(!jaSelecionado) {
+          setCadeiras([...cadeiras, {id, numero}]);
         } else {
-            setCadeiras(new Map(cadeiras.set(id, numero)));
+          const novosAssentos = cadeiras.filter(assento => assento.id !== id);
+          setCadeiras(novosAssentos);
         }
-    }
+      }
 
-    function renderizarLugares(){
-        if (sessao !== null){
-            return sessao.seats.map((seat) =>{
-                const {id, name, isAvailable} = seat;
-                const selecionado = cadeiras.has(id);
-                return <Assento 
-                key={id}
-                id={id}
-                numero={name}
-                disponivel={isAvailable}
-                selecionado={selecionado} 
+      function renderizarLugares() {
+        if(sessao !== null) {
+          return sessao.seats.map(seat => {
+            const {id, name, isAvailable} = seat;
+            const selecionado = cadeiras.some(assento => assento.id === id);
+            return (
+              <Assento 
+                key={id} 
+                id={id} 
+                numero={name} 
+                disponivel={isAvailable} 
+                selecionado={selecionado}
                 selecionar={(id, numero) => toggle(id, numero)}
-                />
-            })
+              />
+            )
+          })
         }
-    }
+      }
 
-    function confirmarCompra(event, cadeiras) {
+    function confirmarCompra(event) {
         event.preventDefault();
         
-        if(cadeiras.length > 0) {
+        if(lugares.length > 0) {
           const promise = axios.post(`https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many`, {
             ids: cadeiras.map((assento) => assento.id),
             name: compra.nome,
@@ -101,8 +103,22 @@ export default function Assentos (props){
         )
       }
 
+      function renderizarFooter() {
+        if(sessao !== null) {
+          return <>
+            <img src={sessao.movie.posterURL} alt={sessao.movie.title} />
+            <div>
+              <p>{sessao.movie.title}</p>
+              <p>{sessao.day.weekday} - {sessao.name}</p>
+            </div>
+          </>
+        } else {
+          return <p>Carregando...</p>;
+        }
+      }
     const lugares = renderizarLugares();
     const legenda = renderizarLegendas();
+    const footer = renderizarFooter();
     const formularioCompra = renderizarCompra();
 
     return(
@@ -113,6 +129,7 @@ export default function Assentos (props){
            <FormularioCompra onSubmit={confirmarCompra}>
             {formularioCompra}
             </FormularioCompra>
+            <Footer>{footer}</Footer>
        </Container>
     )
 }
@@ -183,4 +200,35 @@ const FormularioCompra = styled.form`
     justify-content: center;
     align-items: center;
   }
-`;
+`
+const Footer = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  background-color: var(--cor-footer);
+
+  img {
+    width: 48px;
+    height: 72px;
+    padding: 8px;
+    background-color: white;
+    border-radius: 2px;
+    margin: 10px;
+    box-shadow: 0px 2px 4px 0px #0000001A;
+    border: 1px solid #9EADBA;
+  }
+
+  h1 {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    color: #293845;
+  }`;

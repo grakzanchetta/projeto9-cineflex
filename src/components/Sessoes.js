@@ -72,15 +72,24 @@ const Footer = styled.div`
   background-color: var(--cor-footer);
 
   img {
-    width: 56px;
-    height: 80px;
+    width: 48px;
+    height: 72px;
     padding: 8px;
+    background-color: white;
     border-radius: 2px;
     margin: 10px;
     box-shadow: 0px 2px 4px 0px #0000001A;
     border: 1px solid #9EADBA;
   }
 
+
   h1 {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
     font-size: 26px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    color: #293845;
   }`
