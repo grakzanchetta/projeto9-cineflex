@@ -11,7 +11,6 @@ const Container = styled.div`
     height: 100px;
     font-size: 24px;
     display: flex;
-    justify-content: center;
     align-items: center;
   }
 `;

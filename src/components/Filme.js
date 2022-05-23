@@ -6,7 +6,7 @@ export default function Filme (props){
     return (
         <Link to={`/sessoes/${props.id}`}>
             <Poster>
-                <img src={props.poster}/>
+                <img src={props.poster} alt={"poster"}/>
             </Poster>
         </Link>
         )
@@ -17,7 +17,7 @@ padding: 8px;
 background-color: #FFFFFF;
 box-shadow: 0px 2px 4px 2px #0000001A;
 border-radius: 3px;
-margin: 10px 15px;
+margin: 5.5px 15px;
 width: 145px;
 height: 209px;
 
